@@ -140,7 +140,7 @@ mostrarTimer();
 
 // controla música de fundo
 musica.loop = true;
-podeTocarMusica = false;
+let podeTocarMusica;
 
 botaoMusica.addEventListener("change", () => {
   if (botaoMusica.checked) {
@@ -174,3 +174,4 @@ function pararMusica() {
   musica.pause();
   musica.currentTime = 0;
 }
+
