@@ -142,6 +142,12 @@ mostrarTimer();
 musica.loop = true;
 let podeTocarMusica;
 
+if (botaoMusica.checked) {
+  podeTocarMusica = true;
+} else {
+  podeTocarMusica = false;
+}
+
 botaoMusica.addEventListener("change", () => {
   if (botaoMusica.checked) {
     podeTocarMusica = true;
@@ -174,4 +180,5 @@ function pararMusica() {
   musica.pause();
   musica.currentTime = 0;
 }
+
 
