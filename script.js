@@ -26,12 +26,48 @@ const tempoDescansoLongo = 15 * 60;
 let tempoDecorrido = tempoFoco;
 let intervalo = null;
 
-// botão de música e sons
-const botaoMusica = document.querySelector("#alternar-musica");
+// sons e controles de música
 const musica = new Audio("/sons/luna-rise-part-one.mp3");
 const somIniciar = new Audio("/sons/play.wav");
 const somPausar = new Audio("/sons/pause.mp3");
 const somBeep = new Audio("/sons/beep.mp3");
+
+const botaoMusica = document.querySelector("#alternar-musica");
+let podeTocarMusica = botaoMusica.checked;
+
+// controla música de fundo
+musica.loop = true;
+
+botaoMusica.addEventListener("change", () => {
+  if (botaoMusica.checked && intervalo) {
+    podeTocarMusica = true;
+    tocarMusica();
+  } else {
+    podeTocarMusica = false;
+    pararMusica();
+  }
+});
+
+function tocarMusica() {
+  if (podeTocarMusica) {
+    musica.play();
+  } else {
+    pararMusica();
+  }
+}
+
+function pausarMusica() {
+  if (podeTocarMusica) {
+    musica.pause();
+  } else {
+    pararMusica();
+  }
+}
+
+function pararMusica() {
+  musica.pause();
+  musica.currentTime = 0;
+}
 
 // alterna imagem de fundo e texto de destaque, zera timer e configura duração do timer
 botaoFoco.addEventListener("click", () => {
@@ -91,8 +127,9 @@ function alterarContexto(contexto) {
 // funções relacionadas ao timer
 const contagemRegressiva = () => {
   if (tempoDecorrido == 0) {
+    pararMusica();
     somBeep.play();
-    alert("tempo esgotado!");
+    alert("Tempo esgotado!");
     zerarTimer();
     somBeep.pause();
     return;
@@ -100,6 +137,7 @@ const contagemRegressiva = () => {
 
   tempoDecorrido -= 1;
   console.log("Temporizador: " + tempoDecorrido);
+
   mostrarTimer();
 };
 
@@ -137,48 +175,3 @@ function mostrarTimer() {
 }
 
 mostrarTimer();
-
-// controla música de fundo
-musica.loop = true;
-let podeTocarMusica;
-
-if (botaoMusica.checked) {
-  podeTocarMusica = true;
-} else {
-  podeTocarMusica = false;
-}
-
-botaoMusica.addEventListener("change", () => {
-  if (botaoMusica.checked) {
-    podeTocarMusica = true;
-    if (intervalo) {
-      tocarMusica();
-    }
-  } else {
-    podeTocarMusica = false;
-    pararMusica();
-  }
-});
-
-function tocarMusica() {
-  if (podeTocarMusica) {
-    musica.play();
-  } else {
-    pararMusica();
-  }
-}
-
-function pausarMusica() {
-  if (podeTocarMusica) {
-    musica.pause();
-  } else {
-    pararMusica();
-  }
-}
-
-function pararMusica() {
-  musica.pause();
-  musica.currentTime = 0;
-}
-
-
